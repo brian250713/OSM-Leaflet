@@ -5,6 +5,7 @@
 <script setup>
 import { onMounted, onUnmounted, watch } from 'vue'
 import L from 'leaflet'
+import 'leaflet-routing-machine'
 import Supercluster from 'supercluster'
 import { useStationStore } from '../stores/stationStore'
 
@@ -18,6 +19,7 @@ const clusterMap = new Map()   // cluster id → L.CircleMarker
 let superclusterIndex = null
 let userMarker = null
 let intervalId = null
+let routingControl = null
 
 // ─── Colour logic ──────────────────────────────────────────────
 function getMarkerColor(station) {
@@ -34,8 +36,7 @@ function buildPopupHTML(station) {
   const pct  = station.Quantity > 0
     ? Math.round((station.available_rent_bikes / station.Quantity) * 100)
     : 0
-  const color   = getMarkerColor(station)
-  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${station.latitude},${station.longitude}`
+  const color = getMarkerColor(station)
 
   return `
     <div class="yb-popup">
@@ -48,9 +49,9 @@ function buildPopupHTML(station) {
       <div class="yb-bar-bg">
         <div class="yb-bar-fill" style="width:${pct}%;background:${color}"></div>
       </div>
-      <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="yb-nav-btn">
-        導航前往
-      </a>
+      <button onclick="startRoute(${station.latitude}, ${station.longitude})" class="yb-nav-btn">
+        導航過來
+      </button>
     </div>`
 }
 
@@ -157,6 +158,44 @@ function loadSupercluster(stationsMap) {
   superclusterIndex.load(points)
 }
 
+// ─── Routing ──────────────────────────────────────────────────
+function startRoute(toLat, toLng) {
+  const loc = store.userLocation
+  if (!loc) {
+    alert('請先允許定位以使用導航功能')
+    return
+  }
+
+  if (routingControl) {
+    map.removeControl(routingControl)
+    routingControl = null
+  }
+
+  routingControl = L.Routing.control({
+    waypoints: [
+      L.latLng(loc.lat, loc.lng),
+      L.latLng(toLat, toLng),
+    ],
+    router: L.Routing.osrmv1({
+      serviceUrl: 'https://router.project-osrm.org/route/v1',
+      profile: 'foot',
+    }),
+    lineOptions: {
+      styles: [{ color: '#3182ce', weight: 4 }],
+    },
+    createMarker: () => null,
+    show: false,
+  }).addTo(map)
+
+  routingControl.on('routingerror', () => {
+    alert('找不到路線，請稍後再試')
+    if (routingControl) {
+      map.removeControl(routingControl)
+      routingControl = null
+    }
+  })
+}
+
 // ─── Interval helpers ─────────────────────────────────────────
 function startInterval() {
   intervalId = setInterval(async () => {
@@ -235,11 +274,16 @@ onMounted(async () => {
 
   // 3.5 — Start auto-refresh
   startInterval()
+
+  // Routing — expose to Popup onclick
+  window.startRoute = startRoute
 })
 
 onUnmounted(() => {
   clearInterval(intervalId)
   document.removeEventListener('visibilitychange', onVisibilityChange)
+  if (routingControl) map.removeControl(routingControl)
+  window.startRoute = undefined
   if (map) map.remove()
 })
 

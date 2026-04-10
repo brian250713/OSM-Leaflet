@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
+    "leaflet-routing-machine": "^3.2.12",
     "pinia": "^2.1.7",
     "supercluster": "^8.0.1",
     "vue": "^3.4.0"
