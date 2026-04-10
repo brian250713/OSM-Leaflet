@@ -11,7 +11,8 @@
   - 🔴 紅色：沒有車
   - ⚫ 灰色：停用中
 - **自動更新**：每 2 分鐘背景更新，切換 Tab 時暫停、回來立即刷新（Page Visibility API）
-- **站點資訊**：點擊站點顯示可借數、可還數、進度條及 Google Maps 導航連結
+- **站點資訊**：點擊站點顯示可借數、可還數、進度條
+- **步行導航**：點擊「導航過來」即在地圖上繪製從用戶位置到該站的步行路線（LRM + OSRM）
 - **附近站點**：底部顯示最近 5 個有車的站，依距離排序，點擊直接跳轉
 - **過濾器**：一鍵隱藏沒有車的站點（預設開啟）
 
@@ -22,6 +23,7 @@
 | 框架 | Vue 3 + Vite + Pinia |
 | 地圖 | Leaflet + `L.canvas()` renderer |
 | 空間索引 | supercluster（取代 MarkerCluster） |
+| 路線規劃 | Leaflet Routing Machine + OSRM Demo |
 | 資料來源 | [台北市政府開放資料](https://data.taipei/dataset/detail?id=c6bc8aed-557d-41d5-bfb1-8da24f78f2fb) |
 
 **效能策略：**
