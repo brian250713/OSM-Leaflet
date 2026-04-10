@@ -24,10 +24,10 @@ The system SHALL display a progress bar in the popup showing the proportion of a
 
 ---
 
-### Requirement: Popup contains a Google Maps navigation link
-The system SHALL include a one-tap navigation link in the popup.
+### Requirement: Popup contains an in-app walk routing button
+The system SHALL include a「導航過來」button in the popup that triggers in-app walk routing.
 
-#### Scenario: Google Maps link opens navigation
-- **WHEN** the user taps the navigation button in the popup
-- **THEN** a new tab SHALL open with Google Maps directions to the station's coordinates
-- **THEN** the URL format SHALL be: `https://www.google.com/maps/dir/?api=1&destination=<latitude>,<longitude>`
+#### Scenario: In-app routing button triggers walk route
+- **WHEN** the user taps the「導航過來」button in the popup
+- **THEN** the popup SHALL close
+- **THEN** `startRoute(latitude, longitude)` SHALL be called with the station's coordinates

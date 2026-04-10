@@ -323,20 +323,24 @@ body {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  text-decoration: none;
   font-size: 13px;
   font-weight: 600;
-  color: #3182ce;
+  color: #38a169;
   background: transparent;
-  border: 1.5px solid #3182ce;
+  border: 1.5px solid #38a169;
   border-radius: 8px;
   padding: 7px 12px;
-  transition: background 0.15s;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
 }
 
-.yb-nav-btn::before { content: '🧭'; font-size: 13px; }
+.yb-nav-btn::before { content: '🚶'; font-size: 13px; }
 
-.yb-nav-btn:hover { background: #2b6cb0; border-color: #2b6cb0; }
+.yb-nav-btn:hover { background: #38a169; color: white; }
+
+/* ─── LRM panel — hide itinerary, keep route line ────────────── */
+.leaflet-routing-container { display: none !important; }
 
 /* ─── Cluster tooltip label ───────────────────────────────────── */
 .cluster-label {
