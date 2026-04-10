@@ -1,0 +1,379 @@
+/* ─── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Layout ─────────────────────────────────────────────────── */
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100dvh; /* dynamic viewport height — mobile safe */
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Top overlay (filter) ────────────────────────────────────── */
+.top-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+}
+
+/* ─── Filter control ─────────────────────────────────────────── */
+.filter-control {
+  background: white;
+  border-radius: 10px;
+  padding: 8px 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.toggle-label input { display: none; }
+
+.toggle-track {
+  flex-shrink: 0;
+  width: 42px;
+  height: 24px;
+  background: #cbd5e0;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.toggle-label input:checked + .toggle-track { background: #38a169; }
+
+.toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.toggle-label input:checked + .toggle-track .toggle-thumb {
+  transform: translateX(18px);
+}
+
+/* ─── Leaflet attribution — push above NearbyPanel ──────────── */
+.leaflet-bottom.leaflet-right {
+  bottom: 68px;
+}
+
+/* ─── Legend ─────────────────────────────────────────────────── */
+.legend {
+  position: absolute;
+  bottom: 90px;
+  right: 12px;
+  z-index: 1000;
+  background: white;
+  border-radius: 10px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #2d3748;
+  white-space: nowrap;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(0,0,0,0.1);
+}
+
+/* ─── Nearby panel ────────────────────────────────────────────── */
+.nearby-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.13);
+  transform: translateY(calc(100% - 64px));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 65vh;
+}
+
+.nearby-panel.expanded {
+  transform: translateY(0);
+}
+
+.panel-handle {
+  padding: 10px 16px 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.handle-bar {
+  width: 36px;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin: 0 auto 10px;
+}
+
+.panel-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a202c;
+}
+
+.panel-meta {
+  font-size: 12px;
+  color: #718096;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.changed-badge {
+  background: #38a169;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.panel-content {
+  overflow-y: auto;
+  max-height: calc(65vh - 68px);
+  padding: 0 16px 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-location {
+  text-align: center;
+  color: #a0aec0;
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+/* ─── Station list items ──────────────────────────────────────── */
+.station-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid #f7fafc;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.station-item:last-child { border-bottom: none; }
+
+.station-item:active { background: #f7fafc; }
+
+.station-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.station-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.station-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.station-meta-text {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 2px;
+}
+
+.station-bikes {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.station-bikes-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.bikes-label {
+  font-size: 11px;
+  color: #a0aec0;
+}
+
+.bikes-num {
+  font-size: 20px;
+  font-weight: 800;
+  min-width: 24px;
+  text-align: right;
+}
+
+.bikes-num.return {
+  color: #4299e1;
+}
+
+/* ─── Leaflet popup ───────────────────────────────────────────── */
+.yb-popup {
+  min-width: 190px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.yb-popup-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1a202c;
+  margin-bottom: 2px;
+}
+
+.yb-popup-area {
+  font-size: 12px;
+  color: #718096;
+  margin-bottom: 10px;
+}
+
+.yb-popup-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.yb-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.yb-stat-label {
+  font-size: 12px;
+  color: #718096;
+}
+
+.yb-stat-num {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.yb-bar-bg {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+
+.yb-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  min-width: 4px;
+}
+
+.yb-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3182ce;
+  background: transparent;
+  border: 1.5px solid #3182ce;
+  border-radius: 8px;
+  padding: 7px 12px;
+  transition: background 0.15s;
+}
+
+.yb-nav-btn::before { content: '🧭'; font-size: 13px; }
+
+.yb-nav-btn:hover { background: #2b6cb0; border-color: #2b6cb0; }
+
+/* ─── Cluster tooltip label ───────────────────────────────────── */
+.cluster-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  color: white !important;
+}
+
+/* ─── User location marker ────────────────────────────────────── */
+.user-dot {
+  width: 14px;
+  height: 14px;
+  background: #3182ce;
+  border: 2.5px solid white;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+.user-pulse {
+  width: 24px;
+  height: 24px;
+  background: rgba(49, 130, 206, 0.35);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: user-pulse 2s ease-out infinite;
+}
+
+@keyframes user-pulse {
+  0%   { transform: scale(0.7); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
