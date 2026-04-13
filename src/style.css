@@ -381,3 +381,31 @@ body {
   0%   { transform: scale(0.7); opacity: 1; }
   100% { transform: scale(2.2); opacity: 0; }
 }
+
+/* ─── Locate (重新定位) button ────────────────────────────────── */
+.locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.locate-btn-active {
+  color: #3182ce;
+}
+
+.locate-btn-active:hover {
+  background: #f0f4ff;
+}
+
+.locate-btn-disabled {
+  color: #a0aec0;
+  pointer-events: none;
+}
