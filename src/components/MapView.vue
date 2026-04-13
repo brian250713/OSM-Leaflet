@@ -18,8 +18,41 @@ const markersMap = new Map()   // sno        → L.CircleMarker
 const clusterMap = new Map()   // cluster id → L.CircleMarker
 let superclusterIndex = null
 let userMarker = null
+let accuracyCircle = null
+let watchId = null
+let followMode = false
+let locateBtn = null
 let intervalId = null
 let routingControl = null
+
+// ─── Locate button helper ─────────────────────────────────────
+function updateLocateButton(state) {
+  if (!locateBtn) return
+  locateBtn.classList.remove('locate-btn-active', 'locate-btn-disabled')
+  locateBtn.classList.add(state === 'active' ? 'locate-btn-active' : 'locate-btn-disabled')
+}
+
+// ─── Locate Custom Control ─────────────────────────────────────
+const LocateControl = L.Control.extend({
+  options: { position: 'topright' },
+  onAdd() {
+    const btn = L.DomUtil.create('button', 'locate-btn locate-btn-disabled')
+    btn.title = '重新定位'
+    btn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+      <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/>
+    </svg>`
+    locateBtn = btn
+    L.DomEvent.on(btn, 'click', L.DomEvent.stopPropagation)
+    L.DomEvent.on(btn, 'click', () => {
+      if (btn.classList.contains('locate-btn-disabled')) return
+      const loc = store.userLocation
+      if (!loc || !map) return
+      followMode = true
+      map.flyTo([loc.lat, loc.lng], map.getZoom())
+    })
+    return btn
+  },
+})
 
 // ─── Colour logic ──────────────────────────────────────────────
 function getMarkerColor(station) {
@@ -237,15 +270,16 @@ onMounted(async () => {
     renderVisibleMarkers()
   }
 
-  // 4.1–4.4 — Geolocation
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        const { latitude: lat, longitude: lng } = coords
-        store.setUserLocation(lat, lng)
-        map.flyTo([lat, lng], 18)
+  // Geolocation — continuous tracking via watchPosition
+  new LocateControl().addTo(map)
 
-        // User location marker — DivIcon so CSS pulse animation works
+  if (navigator.geolocation) {
+    const onPosition = ({ coords }) => {
+      const { latitude: lat, longitude: lng } = coords
+      store.setUserLocation(lat, lng)
+
+      if (!userMarker) {
+        // First fix — create marker, circle, fly to location, enter FOLLOWING
         const icon = L.divIcon({
           className: '',
           html: '<div class="user-dot"></div><div class="user-pulse"></div>',
@@ -254,8 +288,7 @@ onMounted(async () => {
         })
         userMarker = L.marker([lat, lng], { icon, interactive: false }).addTo(map)
 
-        // 100 公尺範圍圓圈
-        L.circle([lat, lng], {
+        accuracyCircle = L.circle([lat, lng], {
           radius: 100,
           color: '#3182ce',
           weight: 1.5,
@@ -263,11 +296,33 @@ onMounted(async () => {
           fillOpacity: 0.08,
           interactive: false,
         }).addTo(map)
-      },
-      () => { /* denied — stay at Taipei default, no error popup */ },
-      { timeout: 8000 }
-    )
+
+        map.flyTo([lat, lng], 18)
+        followMode = true
+        updateLocateButton('active')
+      } else {
+        // Subsequent fix — update position
+        userMarker.setLatLng([lat, lng])
+        accuracyCircle.setLatLng([lat, lng])
+        if (followMode) map.panTo([lat, lng], { animate: false })
+      }
+    }
+
+    const onError = () => {
+      updateLocateButton('disabled')
+    }
+
+    watchId = navigator.geolocation.watchPosition(onPosition, onError, {
+      enableHighAccuracy: true,
+      timeout: 8000,
+    })
   }
+
+  // Disable follow mode when user manually drags the map
+  map.on('dragstart', () => {
+    followMode = false
+    updateLocateButton('active')
+  })
 
   // 3.4 — Page Visibility API
   document.addEventListener('visibilitychange', onVisibilityChange)
@@ -281,6 +336,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   clearInterval(intervalId)
+  if (watchId !== null) navigator.geolocation.clearWatch(watchId)
   document.removeEventListener('visibilitychange', onVisibilityChange)
   if (routingControl) map.removeControl(routingControl)
   window.startRoute = undefined
