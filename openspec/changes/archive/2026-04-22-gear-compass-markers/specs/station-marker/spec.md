@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Markers display available bike count as color-coded gear icons
 The system SHALL render each station as a `L.divIcon` containing an inline SVG gear (28×28px), colored by `available_rent_bikes` count using the steampunk palette.
@@ -29,6 +29,8 @@ The system SHALL render markers large enough for finger-tap interaction on mobil
 - **THEN** each `divIcon` SHALL have an `iconSize` of `[28, 28]` and `iconAnchor` of `[14, 14]`
 
 ---
+
+## MODIFIED Requirements
 
 ### Requirement: Marker color updates without recreation
 The system SHALL update marker appearance in-place when `available_rent_bikes` changes.
