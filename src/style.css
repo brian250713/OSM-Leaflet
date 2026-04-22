@@ -1,8 +1,36 @@
+/* ─── Steampunk Design Tokens ─────────────────────────────── */
+:root {
+  --sp-parchment:      #f0d9a0;
+  --sp-parchment-dark: #e8d4a0;
+  --sp-parchment-deep: #d4b870;
+  --sp-brass:          #cd9b1d;
+  --sp-brass-dark:     #8b6914;
+  --sp-brass-light:    #e8c050;
+  --sp-copper:         #b87333;
+  --sp-mahogany:       #2c1810;
+  --sp-leather:        #7a5c3a;
+  --sp-muted:          #a08060;
+  --sp-panel-dark:     #2c1a0e;
+  --sp-panel-dark2:    #3d2510;
+
+  --sp-green:  #4a7c4e;
+  --sp-orange: #c4611a;
+  --sp-red:    #8b2020;
+  --sp-grey:   #5c5c5c;
+
+  --sp-border: 2px solid var(--sp-brass-dark);
+  --sp-radius: 4px;
+  --sp-shadow: 0 4px 20px rgba(92, 61, 17, 0.45),
+               inset 0 1px 0 rgba(205, 155, 29, 0.25);
+  --sp-shadow-sm: 0 2px 10px rgba(92, 61, 17, 0.35),
+                  inset 0 1px 0 rgba(205, 155, 29, 0.2);
+}
+
 /* ─── Reset ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-family: 'Crimson Text', Georgia, serif;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -10,7 +38,7 @@ body {
 .app-container {
   position: relative;
   width: 100vw;
-  height: 100dvh; /* dynamic viewport height — mobile safe */
+  height: 100dvh;
 }
 
 #map {
@@ -28,10 +56,11 @@ body {
 
 /* ─── Filter control ─────────────────────────────────────────── */
 .filter-control {
-  background: white;
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--sp-parchment) 0%, var(--sp-parchment-dark) 100%);
+  border-radius: var(--sp-radius);
   padding: 8px 14px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  border: var(--sp-border);
+  box-shadow: var(--sp-shadow-sm);
 }
 
 .toggle-label {
@@ -40,9 +69,11 @@ body {
   gap: 8px;
   cursor: pointer;
   user-select: none;
-  font-size: 14px;
-  font-weight: 500;
-  color: #2d3748;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sp-mahogany);
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.02em;
 }
 
 .toggle-label input { display: none; }
@@ -51,13 +82,14 @@ body {
   flex-shrink: 0;
   width: 42px;
   height: 24px;
-  background: #cbd5e0;
-  border-radius: 12px;
+  background: var(--sp-leather);
+  border-radius: 2px;
   position: relative;
   transition: background 0.2s;
+  border: 1px solid var(--sp-brass-dark);
 }
 
-.toggle-label input:checked + .toggle-track { background: #38a169; }
+.toggle-label input:checked + .toggle-track { background: var(--sp-brass-dark); }
 
 .toggle-thumb {
   position: absolute;
@@ -65,10 +97,10 @@ body {
   left: 3px;
   width: 18px;
   height: 18px;
-  background: white;
-  border-radius: 50%;
+  background: var(--sp-parchment);
+  border-radius: 1px;
   transition: transform 0.2s;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .toggle-label input:checked + .toggle-track .toggle-thumb {
@@ -86,10 +118,11 @@ body {
   bottom: 90px;
   right: 12px;
   z-index: 1000;
-  background: white;
-  border-radius: 10px;
+  background: linear-gradient(135deg, var(--sp-parchment) 0%, var(--sp-parchment-dark) 100%);
+  border-radius: var(--sp-radius);
   padding: 8px 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  border: var(--sp-border);
+  box-shadow: var(--sp-shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -99,17 +132,19 @@ body {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 12px;
-  color: #2d3748;
+  font-size: 13px;
+  color: var(--sp-mahogany);
+  font-family: 'Crimson Text', serif;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .legend-dot {
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 2px;
   flex-shrink: 0;
-  border: 1.5px solid rgba(0,0,0,0.1);
+  border: 1.5px solid rgba(0,0,0,0.25);
 }
 
 /* ─── Nearby panel ────────────────────────────────────────────── */
@@ -119,9 +154,12 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
-  background: white;
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.13);
+  background: var(--sp-panel-dark);
+  border-radius: 6px 6px 0 0;
+  border-top: 2px solid var(--sp-brass-dark);
+  border-left: 2px solid var(--sp-brass-dark);
+  border-right: 2px solid var(--sp-brass-dark);
+  box-shadow: 0 -4px 24px rgba(44, 26, 14, 0.7);
   transform: translateY(calc(100% - 64px));
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 65vh;
@@ -140,7 +178,7 @@ body {
 .handle-bar {
   width: 36px;
   height: 4px;
-  background: #e2e8f0;
+  background: var(--sp-brass-dark);
   border-radius: 2px;
   margin: 0 auto 10px;
 }
@@ -152,27 +190,32 @@ body {
 }
 
 .panel-title {
+  font-family: 'Cinzel', serif;
   font-weight: 700;
   font-size: 15px;
-  color: #1a202c;
+  color: var(--sp-parchment);
+  letter-spacing: 0.05em;
 }
 
 .panel-meta {
   font-size: 12px;
-  color: #718096;
+  color: var(--sp-leather);
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 6px;
+  font-family: 'Crimson Text', serif;
 }
 
 .changed-badge {
-  background: #38a169;
-  color: white;
+  background: var(--sp-brass-dark);
+  color: var(--sp-parchment);
   padding: 2px 7px;
-  border-radius: 10px;
+  border-radius: 2px;
   font-size: 11px;
   font-weight: 600;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.03em;
 }
 
 .panel-content {
@@ -184,9 +227,10 @@ body {
 
 .no-location {
   text-align: center;
-  color: #a0aec0;
+  color: var(--sp-muted);
   padding: 20px 0;
-  font-size: 14px;
+  font-size: 15px;
+  font-family: 'Crimson Text', serif;
 }
 
 /* ─── Station list items ──────────────────────────────────────── */
@@ -195,21 +239,21 @@ body {
   align-items: center;
   gap: 12px;
   padding: 13px 0;
-  border-bottom: 1px solid #f7fafc;
+  border-bottom: 1px solid var(--sp-panel-dark2);
   cursor: pointer;
   transition: background 0.1s;
 }
 
 .station-item:last-child { border-bottom: none; }
 
-.station-item:active { background: #f7fafc; }
+.station-item:active { background: rgba(205, 155, 29, 0.08); }
 
 .station-dot {
   width: 14px;
   height: 14px;
-  border-radius: 50%;
+  border-radius: 2px;
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 .station-info {
@@ -218,9 +262,10 @@ body {
 }
 
 .station-name {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--sp-parchment);
+  font-family: 'Crimson Text', serif;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -228,8 +273,9 @@ body {
 
 .station-meta-text {
   font-size: 12px;
-  color: #718096;
+  color: var(--sp-leather);
   margin-top: 2px;
+  font-family: 'Crimson Text', serif;
 }
 
 .station-bikes {
@@ -249,36 +295,52 @@ body {
 
 .bikes-label {
   font-size: 11px;
-  color: #a0aec0;
+  color: var(--sp-muted);
+  font-family: 'Crimson Text', serif;
 }
 
 .bikes-num {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   min-width: 24px;
   text-align: right;
+  font-family: 'Cinzel', serif;
+  color: var(--sp-parchment);
 }
 
 .bikes-num.return {
-  color: #4299e1;
+  color: var(--sp-brass-light);
 }
 
 /* ─── Leaflet popup ───────────────────────────────────────────── */
 .yb-popup {
   min-width: 190px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Crimson Text', Georgia, serif;
+}
+
+.leaflet-popup-content-wrapper {
+  background: linear-gradient(135deg, var(--sp-parchment) 0%, var(--sp-parchment-dark) 100%) !important;
+  border: var(--sp-border) !important;
+  border-radius: var(--sp-radius) !important;
+  box-shadow: var(--sp-shadow) !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--sp-parchment-dark) !important;
 }
 
 .yb-popup-name {
+  font-family: 'Cinzel', serif;
   font-weight: 700;
   font-size: 14px;
-  color: #1a202c;
+  color: var(--sp-mahogany);
   margin-bottom: 2px;
+  letter-spacing: 0.03em;
 }
 
 .yb-popup-area {
-  font-size: 12px;
-  color: #718096;
+  font-size: 13px;
+  color: var(--sp-leather);
   margin-bottom: 10px;
 }
 
@@ -296,25 +358,27 @@ body {
 
 .yb-stat-label {
   font-size: 12px;
-  color: #718096;
+  color: var(--sp-leather);
 }
 
 .yb-stat-num {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  color: var(--sp-mahogany);
 }
 
 .yb-bar-bg {
   height: 6px;
-  background: #e2e8f0;
-  border-radius: 3px;
+  background: var(--sp-parchment-deep);
+  border-radius: 2px;
   margin-bottom: 12px;
   overflow: hidden;
 }
 
 .yb-bar-fill {
   height: 100%;
-  border-radius: 3px;
+  border-radius: 2px;
   min-width: 4px;
 }
 
@@ -325,19 +389,21 @@ body {
   gap: 5px;
   font-size: 13px;
   font-weight: 600;
-  color: #38a169;
+  font-family: 'Cinzel', serif;
+  color: var(--sp-copper);
   background: transparent;
-  border: 1.5px solid #38a169;
-  border-radius: 8px;
+  border: 1.5px solid var(--sp-copper);
+  border-radius: var(--sp-radius);
   padding: 7px 12px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   width: 100%;
+  letter-spacing: 0.05em;
 }
 
 .yb-nav-btn::before { content: '🚶'; font-size: 13px; }
 
-.yb-nav-btn:hover { background: #38a169; color: white; }
+.yb-nav-btn:hover { background: var(--sp-copper); color: var(--sp-parchment); }
 
 /* ─── LRM panel — hide itinerary, keep route line ────────────── */
 .leaflet-routing-container { display: none !important; }
@@ -353,33 +419,40 @@ body {
 }
 
 /* ─── User location marker ────────────────────────────────────── */
-.user-dot {
-  width: 14px;
-  height: 14px;
-  background: #3182ce;
-  border: 2.5px solid white;
-  border-radius: 50%;
+.sp-compass {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-  z-index: 2;
+  top: 0;
+  left: 0;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.55));
 }
 
-.user-pulse {
-  width: 24px;
-  height: 24px;
-  background: rgba(49, 130, 206, 0.35);
+.sp-user-pulse {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--sp-brass);
   border-radius: 50%;
   position: absolute;
   top: 0;
   left: 0;
-  animation: user-pulse 2s ease-out infinite;
+  animation: sp-user-pulse 2s ease-out infinite;
 }
 
-@keyframes user-pulse {
+@keyframes sp-user-pulse {
   0%   { transform: scale(0.7); opacity: 1; }
   100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ─── Station gear marker ─────────────────────────────────────── */
+.sp-station-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+}
+
+/* ─── Taiwan basemap grayscale ────────────────────────────────── */
+.sp-map-tiles {
+  filter: grayscale(1) brightness(0.92);
 }
 
 /* ─── Locate (重新定位) button ────────────────────────────────── */
@@ -389,23 +462,139 @@ body {
   justify-content: center;
   width: 30px;
   height: 30px;
-  background: white;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  background: linear-gradient(135deg, var(--sp-parchment) 0%, var(--sp-parchment-dark) 100%);
+  border: 2px solid var(--sp-brass-dark);
+  border-radius: var(--sp-radius);
   cursor: pointer;
-  box-shadow: none;
+  box-shadow: var(--sp-shadow-sm);
   transition: background 0.15s, color 0.15s;
 }
 
 .locate-btn-active {
-  color: #3182ce;
+  color: var(--sp-brass);
 }
 
 .locate-btn-active:hover {
-  background: #f0f4ff;
+  background: var(--sp-parchment-dark);
 }
 
 .locate-btn-disabled {
-  color: #a0aec0;
+  color: var(--sp-muted);
   pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEAVY VERSION — Gears, Rivets, Gauge, Metal Texture
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Gear spin animation ─────────────────────────────────────── */
+@keyframes gear-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Rivet corners (::after pseudo on panels) ────────────────── */
+.filter-control {
+  position: relative;
+}
+
+.filter-control::after,
+.legend::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 7px 7px,             #e8c050 2px, #8b6914 2.8px, transparent 4px),
+    radial-gradient(circle at calc(100% - 7px) 7px, #e8c050 2px, #8b6914 2.8px, transparent 4px),
+    radial-gradient(circle at 7px calc(100% - 7px), #e8c050 2px, #8b6914 2.8px, transparent 4px),
+    radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #e8c050 2px, #8b6914 2.8px, transparent 4px);
+}
+
+/* Rivets on NearbyPanel top corners only */
+.nearby-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12px 20px,             #e8c050 2px, #8b6914 2.8px, transparent 4px),
+    radial-gradient(circle at calc(100% - 12px) 20px, #e8c050 2px, #8b6914 2.8px, transparent 4px);
+}
+
+/* ─── Metal plate texture on dark panel ──────────────────────── */
+.nearby-panel {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 22px,
+      rgba(255, 255, 255, 0.018) 22px,
+      rgba(255, 255, 255, 0.018) 23px
+    );
+}
+
+/* ─── Panel gear (spinning, in NearbyPanel header) ───────────── */
+.panel-gear {
+  width: 15px;
+  height: 15px;
+  fill: var(--sp-brass-dark);
+  flex-shrink: 0;
+  animation: gear-spin 7s linear infinite;
+}
+
+/* ─── Toggle gear (rotates on check) ─────────────────────────── */
+.toggle-gear {
+  width: 16px;
+  height: 16px;
+  fill: var(--sp-brass-dark);
+  flex-shrink: 0;
+  transition: transform 0.45s ease, fill 0.2s;
+}
+
+.toggle-label input:checked ~ .toggle-gear {
+  transform: rotate(60deg);
+  fill: var(--sp-brass);
+}
+
+/* ─── SVG Pressure gauge (replaces linear bar in popup) ──────── */
+.yb-gauge {
+  width: 100%;
+  height: 46px;
+  display: block;
+  margin-bottom: 10px;
+  overflow: visible;
+}
+
+.gauge-track {
+  stroke: var(--sp-parchment-deep);
+  stroke-width: 8;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.gauge-fill {
+  stroke-width: 8;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.gauge-pct {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  fill: var(--sp-leather);
+  text-anchor: middle;
+  dominant-baseline: auto;
+}
+
+.gauge-tick-left,
+.gauge-tick-right {
+  stroke: var(--sp-leather);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
 }
