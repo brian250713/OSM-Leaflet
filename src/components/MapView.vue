@@ -56,11 +56,11 @@ const LocateControl = L.Control.extend({
 
 // ─── Colour logic ──────────────────────────────────────────────
 function getMarkerColor(station) {
-  if (station.act !== '1') return '#5c5c5c'
+  if (station.act !== '1') return '#A8947E'
   const n = station.available_rent_bikes
-  if (n === 0) return '#8b2020'
-  if (n < 5)   return '#c4611a'
-  return '#4a7c4e'
+  if (n === 0) return '#DC2626'
+  if (n < 5)   return '#EA580C'
+  return '#65A30D'
 }
 
 // ─── Icon builders ────────────────────────────────────────────
@@ -261,10 +261,10 @@ onMounted(async () => {
   // 2.1 + 2.2 — Map init
   map = L.map('map', { renderer: L.canvas(), zoomControl: false })
   L.control.zoom({ position: 'topright' }).addTo(map)
-  L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
-    attribution: '© <a href="https://maps.nlsc.gov.tw/">內政部國土測繪中心</a>',
-    maxZoom: 20,
-    className: 'sp-map-tiles',
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19,
+    className: 'warm-map-tiles',
   }).addTo(map)
   map.setView([25.046, 121.517], 14)
 
