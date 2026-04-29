@@ -5,10 +5,10 @@
       <FilterControl />
     </div>
     <div class="legend">
-      <div class="legend-item"><span class="legend-dot" style="background:#4a7c4e"></span>≥ 5 輛</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#c4611a"></span>1–4 輛</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#8b2020"></span>沒有車</div>
-      <div class="legend-item"><span class="legend-dot" style="background:#5c5c5c"></span>停用</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#65A30D"></span>≥ 5 輛</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#EA580C"></span>1–4 輛</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#DC2626"></span>沒有車</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#A8947E"></span>停用</div>
     </div>
     <NearbyPanel />
   </div>
