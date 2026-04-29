@@ -464,14 +464,6 @@ body {
   100% { transform: scale(2.2); opacity: 0; }
 }
 
-/* ─── Station gear marker ─────────────────────────────────────── */
-.sp-station-marker {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));
-}
-
 /* ─── Map tile warm filter ────────────────────────────────────── */
 .warm-map-tiles {
   filter: sepia(0.25) saturate(0.8) brightness(1.05);
